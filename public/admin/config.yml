@@ -1,0 +1,37 @@
+# local_backend: true  # Uncomment for local dev with `npx decap-server`
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # 1. File Collection: Dati Generali Auto
+  - name: "car_info"
+    label: "Dati Veicolo"
+    files:
+      - label: "Stato Attuale Veicolo"
+        name: "status"
+        file: "src/data/car_info.json"
+        fields:
+          - { label: "Targa", name: "plate", widget: "string" }
+          - { label: "Modello", name: "model", widget: "string" }
+          - { label: "Chilometraggio", name: "mileage", widget: "number" }
+          - { label: "Stato Globale", name: "global_status", widget: "select", options: ["Marciante", "In Officina", "In attesa di ricambi"] }
+
+  # 2. Folder Collection: Lista Interventi / Preventivi
+  - name: "interventions"
+    label: "Interventi e Lavori"
+    folder: "src/content/interventions"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titolo Lavoro (es. Cinghia Servizi)", name: "title", widget: "string" }
+      - { label: "Data", name: "date", widget: "datetime" }
+      - { label: "Stato Lavoro", name: "status", widget: "select", options: ["Fatto", "In Corso", "Da Decidere", "In Diagnosi"] }
+      - { label: "Costo Materiale (€)", name: "cost_parts", widget: "number", value_type: "float", required: false }
+      - { label: "Costo Manodopera (€)", name: "cost_labor", widget: "number", value_type: "float", required: false }
+      - { label: "Descrizione / Note Meccanico", name: "body", widget: "markdown" }
+      - { label: "Foto Allegata (Opzionale)", name: "image", widget: "image", required: false }
